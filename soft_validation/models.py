@@ -52,7 +52,7 @@ class SoftValidationModelMixin(models.Model):
     soft_completeness = models.FloatField(
         default=1.0,
         editable=False,
-        verbose_name=_(u'Grade of completeness'))
+        verbose_name=_(u'Grade of completeness (in percent)'))
 
     soft_validation_result = jsonfield.JSONField(
         editable=False,
@@ -78,7 +78,8 @@ class SoftValidationModelMixin(models.Model):
         self.soft_is_valid = is_valid
         self.soft_count_valid = count_valid
         self.soft_count_total = len(self.soft_validators)
-        self.soft_completeness = count_valid /self.soft_count_total
+        self.soft_completeness = (float(count_valid) /
+            float(self.soft_count_total))
         self.soft_validation_result = validation_result
 
     def save(self, *args, **kwargs):
