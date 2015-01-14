@@ -55,6 +55,7 @@ class SoftValidationModelMixin(models.Model):
         verbose_name=_(u'Grade of completeness (in percent)'))
 
     soft_validation_result = jsonfield.JSONField(
+        blank=True, null=True, default=None,
         editable=False,
         help_text=_(u'Contains detailed information a the soft validation ' \
             u'result as JSON dictionary'),
