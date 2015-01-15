@@ -61,6 +61,9 @@ class SoftValidationModelMixin(models.Model):
             u'result as JSON dictionary'),
         verbose_name=_(u'Soft validation result'))
 
+    def soft_completeness_percent(self):
+        return self.soft_completeness * 100.0
+
     def soft_validate(self):
         # prepare vars
         count_valid = 0
