@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext as _
 import jsonfield
@@ -60,6 +61,21 @@ class SoftValidationModelMixin(models.Model):
         help_text=_(u'Contains detailed information a the soft validation ' \
             u'result as JSON dictionary'),
         verbose_name=_(u'Soft validation result'))
+
+    def get_api_url(self):
+        entity = self.__class__.__name__.lower()
+        return reverse('api:%s-validation' % entity, kwargs={'pk': self.pk})
+
+    def soft_validation_dict(self):
+        return {
+            'is_valid': self.soft_is_valid,
+            'count_valid': self.soft_count_valid,
+            'count_total': self.soft_count_total,
+            'completeness': self.soft_completeness,
+            'completeness_percent': self.soft_completeness_percent(),
+            'result': self.soft_validation_result,
+            'url': self.get_api_url(),
+        }
 
     def soft_completeness_percent(self):
         return self.soft_completeness * 100.0
